@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar Producción Académica - CenfoAcadémico</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="../css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <i class="bi bi-mortarboard-fill fs-3"></i>
+      <h5>CenfoAcadémico</h5>
+      <small>Producción Académica</small>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Principal</div>
+      <a href="../index.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <div class="nav-section">Producción Académica</div>
+      <a href="produccion-listar.html"><i class="bi bi-journal-text"></i> Listar Producción</a>
+      <a href="produccion-form.html" class="active" data-role="Administrador,Docente,Investigador"><i class="bi bi-plus-circle"></i> Registrar Producción</a>
+      <div class="nav-section" data-role="Administrador">Mantenimientos</div>
+      <a href="mantenimiento-usuarios.html" data-role="Administrador"><i class="bi bi-people"></i> Usuarios</a>
+      <a href="mantenimiento-tipos.html" data-role="Administrador"><i class="bi bi-tags"></i> Tipos de Producción</a>
+      <a href="mantenimiento-categorias.html" data-role="Administrador"><i class="bi bi-bookmark"></i> Categorías</a>
+      <a href="mantenimiento-areas.html" data-role="Administrador"><i class="bi bi-diagram-3"></i> Áreas de Conocimiento</a>
+      <a href="mantenimiento-tecnologias.html" data-role="Administrador"><i class="bi bi-cpu"></i> Tecnologías</a>
+      <a href="mantenimiento-tipos-investigacion.html" data-role="Administrador"><i class="bi bi-search"></i> Tipos de Investigación</a>
+      <a href="mantenimiento-carreras.html" data-role="Administrador"><i class="bi bi-building"></i> Carreras</a>
+      <a href="mantenimiento-lineas.html" data-role="Administrador"><i class="bi bi-list-nested"></i> Líneas de Investigación</a>
+    </nav>
+  </aside>
+
+  <div class="main-content">
+    <header class="top-navbar">
+      <div class="d-flex align-items-center gap-3">
+        <button class="sidebar-toggle"><i class="bi bi-list"></i></button>
+        <span class="page-title" id="pageTitle">Registrar Producción Académica</span>
+      </div>
+      <div class="role-selector">
+        <i class="bi bi-person-badge"></i>
+        <select id="roleSelector" class="form-select form-select-sm">
+          <option value="Administrador">Administrador</option>
+          <option value="Docente">Docente</option>
+          <option value="Investigador">Investigador</option>
+          <option value="Estudiante">Estudiante</option>
+        </select>
+      </div>
+    </header>
+
+    <div class="content-area">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <form id="produccionForm" class="form-custom" novalidate>
+            <div class="detail-section">
+              <h6><i class="bi bi-file-text me-2"></i>Información General</h6>
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label">Título de la Producción Académica *</label>
+                  <input type="text" class="form-control" id="titulo" required minlength="10" maxlength="200">
+                  <div class="invalid-feedback">El título debe tener entre 10 y 200 caracteres.</div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Autor Principal *</label>
+                  <input type="text" class="form-control" id="autor" required>
+                  <div class="invalid-feedback">El autor es obligatorio.</div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Coautores</label>
+                  <input type="text" class="form-control" id="coautores" placeholder="Separados por coma">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Resumen *</label>
+                  <textarea class="form-control" id="resumen" rows="4" required minlength="50"></textarea>
+                  <div class="invalid-feedback">El resumen debe tener al menos 50 caracteres.</div>
+                </div>
+                <div class="col-md-6">
+                  <div class="row g-3">
+                    <div class="col-12">
+                      <label class="form-label">Año de Publicación *</label>
+                      <input type="number" class="form-control" id="anio" required min="2000" max="2026">
+                      <div class="invalid-feedback">Ingrese un año válido (2000-2026).</div>
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label">Estado *</label>
+                      <select class="form-select" id="estado" required>
+                        <option value="">Seleccione...</option>
+                        <option value="Publicado">Publicado</option>
+                        <option value="En revisión">En revisión</option>
+                        <option value="Borrador">Borrador</option>
+                      </select>
+                      <div class="invalid-feedback">Seleccione un estado.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <h6><i class="bi bi-tags me-2"></i>Clasificación</h6>
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label class="form-label">Tipo de Producción *</label>
+                  <select class="form-select" id="tipo" required>
+                    <option value="">Seleccione...</option>
+                  </select>
+                  <div class="invalid-feedback">Seleccione un tipo.</div>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Categoría *</label>
+                  <select class="form-select" id="categoria" required>
+                    <option value="">Seleccione...</option>
+                  </select>
+                  <div class="invalid-feedback">Seleccione una categoría.</div>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Tipo de Investigación *</label>
+                  <select class="form-select" id="tipoInvestigacion" required>
+                    <option value="">Seleccione...</option>
+                  </select>
+                  <div class="invalid-feedback">Seleccione un tipo de investigación.</div>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Área de Conocimiento *</label>
+                  <select class="form-select" id="area" required>
+                    <option value="">Seleccione...</option>
+                  </select>
+                  <div class="invalid-feedback">Seleccione un área.</div>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Carrera *</label>
+                  <select class="form-select" id="carrera" required>
+                    <option value="">Seleccione...</option>
+                  </select>
+                  <div class="invalid-feedback">Seleccione una carrera.</div>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Línea de Investigación *</label>
+                  <select class="form-select" id="linea" required>
+                    <option value="">Seleccione...</option>
+                  </select>
+                  <div class="invalid-feedback">Seleccione una línea.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <h6><i class="bi bi-cpu me-2"></i>Tecnologías</h6>
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label">Tecnologías Utilizadas *</label>
+                  <div id="tecnologiasContainer" class="d-flex flex-wrap gap-2 mb-2"></div>
+                  <div class="invalid-feedback" id="techError">Seleccione al menos una tecnología.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <h6><i class="bi bi-file-earmark-pdf me-2"></i>Documento PDF</h6>
+              <div class="file-upload-area" id="fileUploadArea">
+                <i class="bi bi-cloud-arrow-up"></i>
+                <p class="mb-1 fw-semibold">Haga clic o arrastre un archivo PDF aquí</p>
+                <small class="text-muted">Tamaño máximo: 10MB</small>
+                <input type="file" id="documento" accept=".pdf" class="d-none">
+              </div>
+              <div id="fileInfo" class="mt-2"></div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-4">
+              <a href="produccion-listar.html" class="btn btn-outline-secondary">Cancelar</a>
+              <button type="submit" class="btn btn-primary-custom"><i class="bi bi-check-lg me-1"></i>Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    let selectedTechs = [];
+    let editId = null;
+
+    function loadSelects() {
+      const selects = {
+        tipo: DB.tiposProduccion,
+        categoria: DB.categorias,
+        tipoInvestigacion: DB.tiposInvestigacion,
+        area: DB.areas,
+        carrera: DB.carreras,
+        linea: DB.lineas
+      };
+      Object.entries(selects).forEach(([id, data]) => {
+        const select = document.getElementById(id);
+        data.forEach(item => select.innerHTML += `<option value="${item.nombre}">${item.nombre}</option>`);
+      });
+    }
+
+    function loadTecnologias() {
+      const container = document.getElementById("tecnologiasContainer");
+      container.innerHTML = "";
+      DB.tecnologias.forEach(tech => {
+        const checked = selectedTechs.includes(tech.nombre);
+        container.innerHTML += `<button type="button" class="btn btn-sm ${checked ? 'btn-primary' : 'btn-outline-secondary'}" onclick="toggleTech('${tech.nombre}')">${tech.nombre}</button>`;
+      });
+    }
+
+    function toggleTech(name) {
+      const idx = selectedTechs.indexOf(name);
+      if (idx > -1) selectedTechs.splice(idx, 1);
+      else selectedTechs.push(name);
+      loadTecnologias();
+    }
+
+    function initFileUpload() {
+      const area = document.getElementById("fileUploadArea");
+      const input = document.getElementById("documento");
+      area.addEventListener("click", () => input.click());
+      area.addEventListener("dragover", (e) => { e.preventDefault(); area.style.borderColor = "#006aea"; });
+      area.addEventListener("dragleave", () => area.style.borderColor = "#d2d2d2");
+      area.addEventListener("drop", (e) => {
+        e.preventDefault();
+        area.style.borderColor = "#d2d2d2";
+        if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+      });
+      input.addEventListener("change", (e) => { if (e.target.files.length) handleFile(e.target.files[0]); });
+    }
+
+    function handleFile(file) {
+      if (file.type !== "application/pdf") {
+        showAlert("Solo se permiten archivos PDF.", "danger");
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        showAlert("El archivo excede el tamaño máximo de 10MB.", "danger");
+        return;
+      }
+      document.getElementById("fileInfo").innerHTML = `<div class="alert alert-success alert-custom py-2"><i class="bi bi-file-earmark-pdf me-2"></i>${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)</div>`;
+    }
+
+    function loadEditData() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+      if (!id) return;
+      editId = parseInt(id);
+      const prod = DB.produccion.find(p => p.id === editId);
+      if (!prod) return;
+      document.getElementById("pageTitle").textContent = "Modificar Producción Académica";
+      document.getElementById("titulo").value = prod.titulo;
+      document.getElementById("autor").value = prod.autor;
+      document.getElementById("coautores").value = prod.coautores;
+      document.getElementById("resumen").value = prod.resumen;
+      document.getElementById("anio").value = prod.anio;
+      document.getElementById("estado").value = prod.estado;
+      document.getElementById("tipo").value = prod.tipo;
+      document.getElementById("categoria").value = prod.categoria;
+      document.getElementById("tipoInvestigacion").value = prod.tipoInvestigacion;
+      document.getElementById("area").value = prod.area;
+      document.getElementById("carrera").value = prod.carrera;
+      document.getElementById("linea").value = prod.linea;
+      selectedTechs = [...prod.tecnologias];
+      loadTecnologias();
+      document.getElementById("fileInfo").innerHTML = `<div class="alert alert-info alert-custom py-2"><i class="bi bi-file-earmark-pdf me-2"></i>Documento actual: ${prod.documento}</div>`;
+    }
+
+    document.getElementById("produccionForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      if (!this.checkValidity() || selectedTechs.length === 0) {
+        e.stopPropagation();
+        this.classList.add("was-validated");
+        if (selectedTechs.length === 0) document.getElementById("techError").style.display = "block";
+        return;
+      }
+      const data = {
+        titulo: document.getElementById("titulo").value,
+        autor: document.getElementById("autor").value,
+        coautores: document.getElementById("coautores").value,
+        resumen: document.getElementById("resumen").value,
+        anio: parseInt(document.getElementById("anio").value),
+        estado: document.getElementById("estado").value,
+        tipo: document.getElementById("tipo").value,
+        categoria: document.getElementById("categoria").value,
+        tipoInvestigacion: document.getElementById("tipoInvestigacion").value,
+        area: document.getElementById("area").value,
+        carrera: document.getElementById("carrera").value,
+        linea: document.getElementById("linea").value,
+        tecnologias: selectedTechs,
+        documento: "documento_" + Date.now() + ".pdf",
+        fecha: new Date().toISOString().split("T")[0]
+      };
+      if (editId) {
+        const idx = DB.produccion.findIndex(p => p.id === editId);
+        DB.produccion[idx] = { ...DB.produccion[idx], ...data };
+        showAlert("Producción académica actualizada correctamente.");
+      } else {
+        data.id = Math.max(...DB.produccion.map(p => p.id)) + 1;
+        DB.produccion.push(data);
+        showAlert("Producción académica registrada correctamente.");
+      }
+      setTimeout(() => window.location.href = "produccion-listar.html", 1500);
+    });
+
+    loadSelects();
+    loadTecnologias();
+    initFileUpload();
+    loadEditData();
+  </script>
+</body>
+</html>

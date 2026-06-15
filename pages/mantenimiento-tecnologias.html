@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tecnologías - CenfoAcadémico</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="../css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-header"><i class="bi bi-mortarboard-fill fs-3"></i><h5>CenfoAcadémico</h5><small>Producción Académica</small></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Principal</div>
+      <a href="../index.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <div class="nav-section">Producción Académica</div>
+      <a href="produccion-listar.html"><i class="bi bi-journal-text"></i> Listar Producción</a>
+      <a href="produccion-form.html" data-role="Administrador,Docente,Investigador"><i class="bi bi-plus-circle"></i> Registrar Producción</a>
+      <div class="nav-section" data-role="Administrador">Mantenimientos</div>
+      <a href="mantenimiento-usuarios.html" data-role="Administrador"><i class="bi bi-people"></i> Usuarios</a>
+      <a href="mantenimiento-tipos.html" data-role="Administrador"><i class="bi bi-tags"></i> Tipos de Producción</a>
+      <a href="mantenimiento-categorias.html" data-role="Administrador"><i class="bi bi-bookmark"></i> Categorías</a>
+      <a href="mantenimiento-areas.html" data-role="Administrador"><i class="bi bi-diagram-3"></i> Áreas de Conocimiento</a>
+      <a href="mantenimiento-tecnologias.html" class="active" data-role="Administrador"><i class="bi bi-cpu"></i> Tecnologías</a>
+      <a href="mantenimiento-tipos-investigacion.html" data-role="Administrador"><i class="bi bi-search"></i> Tipos de Investigación</a>
+      <a href="mantenimiento-carreras.html" data-role="Administrador"><i class="bi bi-building"></i> Carreras</a>
+      <a href="mantenimiento-lineas.html" data-role="Administrador"><i class="bi bi-list-nested"></i> Líneas de Investigación</a>
+    </nav>
+  </aside>
+
+  <div class="main-content">
+    <header class="top-navbar">
+      <div class="d-flex align-items-center gap-3"><button class="sidebar-toggle"><i class="bi bi-list"></i></button><span class="page-title">Tecnologías</span></div>
+      <div class="role-selector"><i class="bi bi-person-badge"></i><select id="roleSelector" class="form-select form-select-sm"><option value="Administrador">Administrador</option><option value="Docente">Docente</option><option value="Investigador">Investigador</option><option value="Estudiante">Estudiante</option></select></div>
+    </header>
+
+    <div class="content-area">
+      <div class="card-custom mb-4">
+        <div class="card-body">
+          <div class="row g-3 align-items-center">
+            <div class="col-md-8"><div class="search-box"><i class="bi bi-search"></i><input type="text" id="searchInput" placeholder="Buscar tecnología..." onkeyup="renderTecnologias()"></div></div>
+            <div class="col-md-4 text-end"><button class="btn btn-primary-custom" onclick="showAddModal()"><i class="bi bi-plus-lg me-1"></i>Nueva Tecnología</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-custom">
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-custom mb-0">
+              <thead><tr><th>ID</th><th>Nombre</th><th>Descripción</th><th>Acciones</th></tr></thead>
+              <tbody id="tecnologiasTable"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center p-3">
+          <small class="text-muted" id="tableInfo"></small>
+          <div id="paginationContainer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade modal-custom" id="editModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Editar Tecnología</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="editForm"></form></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button><button type="button" class="btn btn-primary-custom" onclick="saveEdit()">Guardar</button></div></div></div></div>
+
+  <div class="modal fade modal-custom" id="addModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Nueva Tecnología</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="addForm" class="form-custom"><div class="mb-3"><label class="form-label">Nombre *</label><input type="text" class="form-control" id="addNombre" required></div><div class="mb-3"><label class="form-label">Descripción *</label><textarea class="form-control" id="addDescripcion" rows="3" required></textarea></div></form></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button><button type="button" class="btn btn-primary-custom" onclick="addItem()">Guardar</button></div></div></div></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    function renderTecnologias() {
+      const search = document.getElementById("searchInput").value.toLowerCase();
+      let filtered = DB.tecnologias.filter(t => !search || t.nombre.toLowerCase().includes(search) || t.descripcion.toLowerCase().includes(search));
+      const start = (currentPage - 1) * itemsPerPage;
+      const paginated = filtered.slice(start, start + itemsPerPage);
+      let html = "";
+      paginated.forEach(t => {
+        html += `<tr><td>${t.id}</td><td class="fw-semibold">${t.nombre}</td><td>${t.descripcion}</td><td>${getActionButtons("tecnologias", t.id)}</td></tr>`;
+      });
+      document.getElementById("tecnologiasTable").innerHTML = html || '<tr><td colspan="4" class="text-center text-muted py-4">No se encontraron resultados</td></tr>';
+      document.getElementById("tableInfo").textContent = `Mostrando ${start + 1}-${Math.min(start + itemsPerPage, filtered.length)} de ${filtered.length} registros`;
+      renderPagination(filtered.length, "paginationContainer", "renderTecnologias");
+    }
+    function showAddModal() { new bootstrap.Modal(document.getElementById("addModal")).show(); }
+    function addItem() {
+      const nombre = document.getElementById("addNombre").value;
+      const descripcion = document.getElementById("addDescripcion").value;
+      if (!nombre || !descripcion) { showAlert("Complete todos los campos.", "danger"); return; }
+      DB.tecnologias.push({ id: Math.max(...DB.tecnologias.map(i => i.id)) + 1, nombre, descripcion });
+      bootstrap.Modal.getInstance(document.getElementById("addModal")).hide();
+      showAlert("Tecnología creada correctamente.");
+      renderTecnologias();
+    }
+    renderTecnologias();
+  </script>
+</body>
+</html>
