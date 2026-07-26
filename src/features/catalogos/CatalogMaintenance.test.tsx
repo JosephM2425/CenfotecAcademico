@@ -4,17 +4,27 @@ import userEvent from '@testing-library/user-event'
 import type { ReactNode } from 'react'
 import { describe, expect, it } from 'vitest'
 import { categoriasSeed } from '../../services/seedData'
-import { RoleProvider } from '../../store/RoleProvider'
+import type { AuthUser } from '../../services/types'
+import { AuthContext } from '../../store/AuthContext'
 import { ToastProvider } from '../../store/ToastProvider'
 import { CatalogMaintenance } from './CatalogMaintenance'
+
+const adminUser: AuthUser = {
+  id: 1,
+  nombre: 'Admin de Prueba',
+  email: 'admin@ucenfotec.ac.cr',
+  rol: 'Administrador',
+  estado: 'Activo',
+  fechaRegistro: '2024-01-01',
+}
 
 function renderWithProviders(ui: ReactNode) {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })
   return render(
     <QueryClientProvider client={queryClient}>
-      <RoleProvider>
+      <AuthContext.Provider value={{ user: adminUser, login: async () => {}, logout: () => {} }}>
         <ToastProvider>{ui}</ToastProvider>
-      </RoleProvider>
+      </AuthContext.Provider>
     </QueryClientProvider>,
   )
 }

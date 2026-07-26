@@ -1,4 +1,5 @@
 export const paths = {
+  login: '/login',
   dashboard: '/',
   produccionList: '/produccion',
   produccionNuevo: '/produccion/nuevo',

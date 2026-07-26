@@ -6,18 +6,18 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import './assets/app.css'
 import { router } from './routes/router'
+import { AuthProvider } from './store/AuthProvider'
 import { queryClient } from './store/queryClient'
-import { RoleProvider } from './store/RoleProvider'
 import { ToastProvider } from './store/ToastProvider'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RoleProvider>
+      <AuthProvider>
         <ToastProvider>
           <RouterProvider router={router} />
         </ToastProvider>
-      </RoleProvider>
+      </AuthProvider>
     </QueryClientProvider>
   </StrictMode>,
 )

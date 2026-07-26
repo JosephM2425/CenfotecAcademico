@@ -119,18 +119,27 @@ body {
   color: var(--primary);
 }
 
-.role-selector {
+.user-menu {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
+  color: var(--primary);
 }
 
-.role-selector select {
-  border: 1px solid var(--gray-light);
-  border-radius: 6px;
-  padding: 0.35rem 0.75rem;
-  font-size: 0.8rem;
-  color: var(--primary);
+.user-menu-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.user-menu-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.user-menu-role {
+  font-size: 0.7rem;
+  color: var(--gray-medium);
 }
 
 .content-area {
@@ -267,6 +276,79 @@ body {
   box-shadow: 0 0 0 3px rgba(0, 106, 234, 0.15);
 }
 
+.tech-picker {
+  position: relative;
+}
+
+.tech-picker-input-wrap {
+  position: relative;
+}
+
+.tech-picker-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  background: white;
+  border: 1px solid var(--gray-light);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-height: 220px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0.25rem;
+  list-style: none;
+}
+
+.tech-picker-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.85rem;
+  color: #1a2740;
+}
+
+.tech-picker-option:hover,
+.tech-picker-option:focus {
+  background: var(--secondary);
+  outline: none;
+}
+
+.tech-picker-empty {
+  padding: 0.45rem 0.75rem;
+  font-size: 0.8rem;
+  color: var(--gray-medium);
+}
+
+.tech-picker-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.5rem 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.tech-picker-chip-remove {
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: white;
+  padding: 0;
+  line-height: 1;
+  opacity: 0.85;
+}
+
+.tech-picker-chip-remove:hover {
+  opacity: 1;
+}
+
 .file-upload-area {
   border: 2px dashed var(--gray-light);
   border-radius: 12px;
@@ -338,6 +420,24 @@ body {
   border: none;
   padding: 1rem 1.25rem;
   font-size: 0.85rem;
+}
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, var(--primary) 0%, var(--primary-light) 100%);
+  padding: 1rem;
+}
+
+.login-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 2rem;
+  width: 100%;
+  max-width: 380px;
 }
 
 .sidebar-toggle {

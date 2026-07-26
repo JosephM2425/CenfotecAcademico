@@ -1,4 +1,4 @@
-import { createEntityApi } from './entityApi'
+import { createEntityApi } from "./entityApi";
 import {
   areasSeed,
   carrerasSeed,
@@ -7,15 +7,35 @@ import {
   tecnologiasSeed,
   tiposInvestigacionSeed,
   tiposProduccionSeed,
-} from './seedData'
-import type { CatalogItem } from './types'
+} from "./seedData";
+import { storageKeys } from "./storageKeys";
+import type { CatalogItem } from "./types";
 
-// Singleton stores shared across features: the maintenance pages (CRUD)
-// and the producción form (dropdown options) read/write the same data.
-export const tiposProduccionApi = createEntityApi<CatalogItem>(tiposProduccionSeed)
-export const categoriasApi = createEntityApi<CatalogItem>(categoriasSeed)
-export const areasApi = createEntityApi<CatalogItem>(areasSeed)
-export const tecnologiasApi = createEntityApi<CatalogItem>(tecnologiasSeed)
-export const tiposInvestigacionApi = createEntityApi<CatalogItem>(tiposInvestigacionSeed)
-export const carrerasApi = createEntityApi<CatalogItem>(carrerasSeed)
-export const lineasApi = createEntityApi<CatalogItem>(lineasSeed)
+export const tiposProduccionApi = createEntityApi<CatalogItem>(
+  tiposProduccionSeed,
+  storageKeys.catalog("tipos"),
+);
+export const categoriasApi = createEntityApi<CatalogItem>(
+  categoriasSeed,
+  storageKeys.catalog("categorias"),
+);
+export const areasApi = createEntityApi<CatalogItem>(
+  areasSeed,
+  storageKeys.catalog("areas"),
+);
+export const tecnologiasApi = createEntityApi<CatalogItem>(
+  tecnologiasSeed,
+  storageKeys.catalog("tecnologias"),
+);
+export const tiposInvestigacionApi = createEntityApi<CatalogItem>(
+  tiposInvestigacionSeed,
+  storageKeys.catalog("tipos-investigacion"),
+);
+export const carrerasApi = createEntityApi<CatalogItem>(
+  carrerasSeed,
+  storageKeys.catalog("carreras"),
+);
+export const lineasApi = createEntityApi<CatalogItem>(
+  lineasSeed,
+  storageKeys.catalog("lineas"),
+);

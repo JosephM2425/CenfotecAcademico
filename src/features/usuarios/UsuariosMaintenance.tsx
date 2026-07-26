@@ -24,11 +24,12 @@ const ESTADOS: EstadoUsuario[] = ['Activo', 'Inactivo']
 interface UsuarioFormValues {
   nombre: string
   email: string
+  password: string
   rol: Rol | ''
   estado: EstadoUsuario
 }
 
-const EMPTY_FORM: UsuarioFormValues = { nombre: '', email: '', rol: '', estado: 'Activo' }
+const EMPTY_FORM: UsuarioFormValues = { nombre: '', email: '', password: '', rol: '', estado: 'Activo' }
 
 const columnHelper = createColumnHelper<Usuario>()
 
@@ -69,12 +70,18 @@ export function UsuariosMaintenance() {
   }
 
   function openEditModal(usuario: Usuario) {
-    setFormValues({ nombre: usuario.nombre, email: usuario.email, rol: usuario.rol, estado: usuario.estado })
+    setFormValues({
+      nombre: usuario.nombre,
+      email: usuario.email,
+      password: '',
+      rol: usuario.rol,
+      estado: usuario.estado,
+    })
     setEditingUsuario(usuario)
   }
 
   function handleCreate() {
-    if (!formValues.nombre.trim() || !formValues.email.trim() || !formValues.rol) {
+    if (!formValues.nombre.trim() || !formValues.email.trim() || !formValues.password || !formValues.rol) {
       showToast('Complete todos los campos obligatorios.', 'danger')
       return
     }
@@ -82,6 +89,7 @@ export function UsuariosMaintenance() {
       {
         nombre: formValues.nombre.trim(),
         email: formValues.email.trim(),
+        password: formValues.password,
         rol: formValues.rol,
         estado: formValues.estado,
         fechaRegistro: new Date().toISOString().split('T')[0],
@@ -109,6 +117,7 @@ export function UsuariosMaintenance() {
           email: formValues.email.trim(),
           rol: formValues.rol,
           estado: formValues.estado,
+          ...(formValues.password ? { password: formValues.password } : {}),
         },
       },
       {
@@ -272,7 +281,7 @@ export function UsuariosMaintenance() {
           <Modal.Title>Nuevo Usuario</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <UsuarioFields values={formValues} onChange={setFormValues} />
+          <UsuarioFields values={formValues} onChange={setFormValues} isEditing={false} />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowAddModal(false)}>
@@ -289,7 +298,7 @@ export function UsuariosMaintenance() {
           <Modal.Title>Editar Usuario</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <UsuarioFields values={formValues} onChange={setFormValues} />
+          <UsuarioFields values={formValues} onChange={setFormValues} isEditing />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setEditingUsuario(null)}>
@@ -307,9 +316,10 @@ export function UsuariosMaintenance() {
 interface UsuarioFieldsProps {
   values: UsuarioFormValues
   onChange: (values: UsuarioFormValues) => void
+  isEditing: boolean
 }
 
-function UsuarioFields({ values, onChange }: UsuarioFieldsProps) {
+function UsuarioFields({ values, onChange, isEditing }: UsuarioFieldsProps) {
   return (
     <Form className="form-custom">
       <Form.Group className="mb-3" controlId="usuarioNombre">
@@ -319,6 +329,15 @@ function UsuarioFields({ values, onChange }: UsuarioFieldsProps) {
       <Form.Group className="mb-3" controlId="usuarioEmail">
         <Form.Label>Email *</Form.Label>
         <Form.Control type="email" value={values.email} onChange={(e) => onChange({ ...values, email: e.target.value })} />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="usuarioPassword">
+        <Form.Label>{isEditing ? 'Nueva contraseña (opcional)' : 'Contraseña *'}</Form.Label>
+        <Form.Control
+          type="password"
+          placeholder={isEditing ? 'Dejar en blanco para no cambiarla' : ''}
+          value={values.password}
+          onChange={(e) => onChange({ ...values, password: e.target.value })}
+        />
       </Form.Group>
       <Form.Group className="mb-3" controlId="usuarioRol">
         <Form.Label>Rol *</Form.Label>

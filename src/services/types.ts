@@ -35,9 +35,13 @@ export interface Usuario {
   id: number
   nombre: string
   email: string
+  password: string
   rol: Rol
   estado: EstadoUsuario
   fechaRegistro: string
 }
 
 export type UsuarioInput = Omit<Usuario, 'id'>
+
+/** The logged-in user, without the password — this is what gets stored in the session. */
+export type AuthUser = Omit<Usuario, 'password'>
