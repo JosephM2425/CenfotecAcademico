@@ -1,0 +1,1265 @@
+{
+  "dialect": "mssql",
+  "id": "bcd70900-7c7b-4197-a937-9103572fad68",
+  "prevIds": [
+    "00000000-0000-0000-0000-000000000000"
+  ],
+  "version": "2",
+  "ddl": [
+    {
+      "name": "Categories",
+      "entityType": "tables",
+      "schema": "dbo"
+    },
+    {
+      "name": "Documents",
+      "entityType": "tables",
+      "schema": "dbo"
+    },
+    {
+      "name": "KnowledgeAreas",
+      "entityType": "tables",
+      "schema": "dbo"
+    },
+    {
+      "name": "Majors",
+      "entityType": "tables",
+      "schema": "dbo"
+    },
+    {
+      "name": "ProductionCoauthors",
+      "entityType": "tables",
+      "schema": "dbo"
+    },
+    {
+      "name": "Productions",
+      "entityType": "tables",
+      "schema": "dbo"
+    },
+    {
+      "name": "ProductionTechnologies",
+      "entityType": "tables",
+      "schema": "dbo"
+    },
+    {
+      "name": "ProductionTypes",
+      "entityType": "tables",
+      "schema": "dbo"
+    },
+    {
+      "name": "ResearchLines",
+      "entityType": "tables",
+      "schema": "dbo"
+    },
+    {
+      "name": "ResearchTypes",
+      "entityType": "tables",
+      "schema": "dbo"
+    },
+    {
+      "name": "Technologies",
+      "entityType": "tables",
+      "schema": "dbo"
+    },
+    {
+      "name": "Users",
+      "entityType": "tables",
+      "schema": "dbo"
+    },
+    {
+      "type": "int",
+      "notNull": false,
+      "generated": null,
+      "identity": {
+        "increment": 1,
+        "seed": 1
+      },
+      "name": "Id",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "ProductionTypes"
+    },
+    {
+      "type": "nvarchar(100)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Name",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "ProductionTypes"
+    },
+    {
+      "type": "nvarchar(400)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Description",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "ProductionTypes"
+    },
+    {
+      "type": "int",
+      "notNull": false,
+      "generated": null,
+      "identity": {
+        "increment": 1,
+        "seed": 1
+      },
+      "name": "Id",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Categories"
+    },
+    {
+      "type": "nvarchar(100)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Name",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Categories"
+    },
+    {
+      "type": "nvarchar(400)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Description",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Categories"
+    },
+    {
+      "type": "int",
+      "notNull": false,
+      "generated": null,
+      "identity": {
+        "increment": 1,
+        "seed": 1
+      },
+      "name": "Id",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "KnowledgeAreas"
+    },
+    {
+      "type": "nvarchar(100)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Name",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "KnowledgeAreas"
+    },
+    {
+      "type": "nvarchar(400)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Description",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "KnowledgeAreas"
+    },
+    {
+      "type": "int",
+      "notNull": false,
+      "generated": null,
+      "identity": {
+        "increment": 1,
+        "seed": 1
+      },
+      "name": "Id",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Technologies"
+    },
+    {
+      "type": "nvarchar(100)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Name",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Technologies"
+    },
+    {
+      "type": "nvarchar(400)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Description",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Technologies"
+    },
+    {
+      "type": "int",
+      "notNull": false,
+      "generated": null,
+      "identity": {
+        "increment": 1,
+        "seed": 1
+      },
+      "name": "Id",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "ResearchTypes"
+    },
+    {
+      "type": "nvarchar(100)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Name",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "ResearchTypes"
+    },
+    {
+      "type": "nvarchar(400)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Description",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "ResearchTypes"
+    },
+    {
+      "type": "int",
+      "notNull": false,
+      "generated": null,
+      "identity": {
+        "increment": 1,
+        "seed": 1
+      },
+      "name": "Id",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Majors"
+    },
+    {
+      "type": "nvarchar(150)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Name",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Majors"
+    },
+    {
+      "type": "nvarchar(400)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Description",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Majors"
+    },
+    {
+      "type": "int",
+      "notNull": false,
+      "generated": null,
+      "identity": {
+        "increment": 1,
+        "seed": 1
+      },
+      "name": "Id",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "ResearchLines"
+    },
+    {
+      "type": "nvarchar(150)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Name",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "ResearchLines"
+    },
+    {
+      "type": "nvarchar(400)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Description",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "ResearchLines"
+    },
+    {
+      "type": "int",
+      "notNull": false,
+      "generated": null,
+      "identity": {
+        "increment": 1,
+        "seed": 1
+      },
+      "name": "Id",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Users"
+    },
+    {
+      "type": "nvarchar(150)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Name",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Users"
+    },
+    {
+      "type": "nvarchar(150)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Email",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Users"
+    },
+    {
+      "type": "nvarchar(255)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Password",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Users"
+    },
+    {
+      "type": "tinyint",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Role",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Users"
+    },
+    {
+      "type": "tinyint",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Status",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Users"
+    },
+    {
+      "type": "date",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "RegisteredAt",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Users"
+    },
+    {
+      "type": "int",
+      "notNull": false,
+      "generated": null,
+      "identity": {
+        "increment": 1,
+        "seed": 1
+      },
+      "name": "Id",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "type": "nvarchar(300)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Title",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "type": "nvarchar(150)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Author",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "OwnerId",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "ProductionTypeId",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "CategoryId",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "KnowledgeAreaId",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "ResearchTypeId",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "MajorId",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "ResearchLineId",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "type": "smallint",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Year",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "type": "tinyint",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Status",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "type": "nvarchar(max)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "Summary",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "type": "date",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "CreatedAt",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "type": "int",
+      "notNull": false,
+      "generated": null,
+      "identity": {
+        "increment": 1,
+        "seed": 1
+      },
+      "name": "Id",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Documents"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "ProductionId",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Documents"
+    },
+    {
+      "type": "nvarchar(260)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "OriginalFileName",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Documents"
+    },
+    {
+      "type": "nvarchar(400)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "StorageKey",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Documents"
+    },
+    {
+      "type": "nvarchar(100)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "ContentType",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Documents"
+    },
+    {
+      "type": "bigint",
+      "notNull": false,
+      "generated": null,
+      "identity": null,
+      "name": "SizeBytes",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Documents"
+    },
+    {
+      "type": "datetime2(7)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "UploadedAt",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "Documents"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "ProductionId",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "ProductionTechnologies"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "TechnologyId",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "ProductionTechnologies"
+    },
+    {
+      "type": "int",
+      "notNull": false,
+      "generated": null,
+      "identity": {
+        "increment": 1,
+        "seed": 1
+      },
+      "name": "Id",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "ProductionCoauthors"
+    },
+    {
+      "type": "int",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "ProductionId",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "ProductionCoauthors"
+    },
+    {
+      "type": "nvarchar(150)",
+      "notNull": true,
+      "generated": null,
+      "identity": null,
+      "name": "CoauthorName",
+      "entityType": "columns",
+      "schema": "dbo",
+      "table": "ProductionCoauthors"
+    },
+    {
+      "columns": [
+        {
+          "value": "ProductionId",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "name": "IX_ProductionCoauthors_ProductionId",
+      "entityType": "indexes",
+      "schema": "dbo",
+      "table": "ProductionCoauthors"
+    },
+    {
+      "columns": [
+        {
+          "value": "Author",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "name": "IX_Productions_Author",
+      "entityType": "indexes",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "columns": [
+        {
+          "value": "CategoryId",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "name": "IX_Productions_CategoryId",
+      "entityType": "indexes",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "columns": [
+        {
+          "value": "KnowledgeAreaId",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "name": "IX_Productions_KnowledgeAreaId",
+      "entityType": "indexes",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "columns": [
+        {
+          "value": "MajorId",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "name": "IX_Productions_MajorId",
+      "entityType": "indexes",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "columns": [
+        {
+          "value": "OwnerId",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "name": "IX_Productions_OwnerId",
+      "entityType": "indexes",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "columns": [
+        {
+          "value": "ProductionTypeId",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "name": "IX_Productions_ProductionTypeId",
+      "entityType": "indexes",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "columns": [
+        {
+          "value": "ResearchLineId",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "name": "IX_Productions_ResearchLineId",
+      "entityType": "indexes",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "columns": [
+        {
+          "value": "ResearchTypeId",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "name": "IX_Productions_ResearchTypeId",
+      "entityType": "indexes",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "columns": [
+        {
+          "value": "Status",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "name": "IX_Productions_Status",
+      "entityType": "indexes",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "columns": [
+        {
+          "value": "Title",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "name": "IX_Productions_Title",
+      "entityType": "indexes",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "columns": [
+        {
+          "value": "Year",
+          "isExpression": false
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "name": "IX_Productions_Year",
+      "entityType": "indexes",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Name"
+      ],
+      "name": "UQ_Categories_Name",
+      "entityType": "uniques",
+      "schema": "dbo",
+      "table": "Categories"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "ProductionId"
+      ],
+      "name": "UQ_Documents_ProductionId",
+      "entityType": "uniques",
+      "schema": "dbo",
+      "table": "Documents"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Name"
+      ],
+      "name": "UQ_KnowledgeAreas_Name",
+      "entityType": "uniques",
+      "schema": "dbo",
+      "table": "KnowledgeAreas"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Name"
+      ],
+      "name": "UQ_Majors_Name",
+      "entityType": "uniques",
+      "schema": "dbo",
+      "table": "Majors"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Name"
+      ],
+      "name": "UQ_ProductionTypes_Name",
+      "entityType": "uniques",
+      "schema": "dbo",
+      "table": "ProductionTypes"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Name"
+      ],
+      "name": "UQ_ResearchLines_Name",
+      "entityType": "uniques",
+      "schema": "dbo",
+      "table": "ResearchLines"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Name"
+      ],
+      "name": "UQ_ResearchTypes_Name",
+      "entityType": "uniques",
+      "schema": "dbo",
+      "table": "ResearchTypes"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Name"
+      ],
+      "name": "UQ_Technologies_Name",
+      "entityType": "uniques",
+      "schema": "dbo",
+      "table": "Technologies"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Email"
+      ],
+      "name": "UQ_Users_Email",
+      "entityType": "uniques",
+      "schema": "dbo",
+      "table": "Users"
+    },
+    {
+      "columns": [
+        "ProductionId"
+      ],
+      "nameExplicit": true,
+      "schemaTo": "dbo",
+      "tableTo": "Productions",
+      "columnsTo": [
+        "Id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "name": "FK_Documents_Production",
+      "entityType": "fks",
+      "schema": "dbo",
+      "table": "Documents"
+    },
+    {
+      "columns": [
+        "ProductionId"
+      ],
+      "nameExplicit": true,
+      "schemaTo": "dbo",
+      "tableTo": "Productions",
+      "columnsTo": [
+        "Id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "name": "FK_ProductionCoauthors_Production",
+      "entityType": "fks",
+      "schema": "dbo",
+      "table": "ProductionCoauthors"
+    },
+    {
+      "columns": [
+        "CategoryId"
+      ],
+      "nameExplicit": true,
+      "schemaTo": "dbo",
+      "tableTo": "Categories",
+      "columnsTo": [
+        "Id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "FK_Productions_Category",
+      "entityType": "fks",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "columns": [
+        "KnowledgeAreaId"
+      ],
+      "nameExplicit": true,
+      "schemaTo": "dbo",
+      "tableTo": "KnowledgeAreas",
+      "columnsTo": [
+        "Id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "FK_Productions_KnowledgeArea",
+      "entityType": "fks",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "columns": [
+        "MajorId"
+      ],
+      "nameExplicit": true,
+      "schemaTo": "dbo",
+      "tableTo": "Majors",
+      "columnsTo": [
+        "Id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "FK_Productions_Major",
+      "entityType": "fks",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "columns": [
+        "OwnerId"
+      ],
+      "nameExplicit": true,
+      "schemaTo": "dbo",
+      "tableTo": "Users",
+      "columnsTo": [
+        "Id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "FK_Productions_Owner",
+      "entityType": "fks",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "columns": [
+        "ProductionTypeId"
+      ],
+      "nameExplicit": true,
+      "schemaTo": "dbo",
+      "tableTo": "ProductionTypes",
+      "columnsTo": [
+        "Id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "FK_Productions_ProductionType",
+      "entityType": "fks",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "columns": [
+        "ResearchLineId"
+      ],
+      "nameExplicit": true,
+      "schemaTo": "dbo",
+      "tableTo": "ResearchLines",
+      "columnsTo": [
+        "Id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "FK_Productions_ResearchLine",
+      "entityType": "fks",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "columns": [
+        "ResearchTypeId"
+      ],
+      "nameExplicit": true,
+      "schemaTo": "dbo",
+      "tableTo": "ResearchTypes",
+      "columnsTo": [
+        "Id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "FK_Productions_ResearchType",
+      "entityType": "fks",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "columns": [
+        "ProductionId"
+      ],
+      "nameExplicit": true,
+      "schemaTo": "dbo",
+      "tableTo": "Productions",
+      "columnsTo": [
+        "Id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "name": "FK_ProductionTechnologies_Production",
+      "entityType": "fks",
+      "schema": "dbo",
+      "table": "ProductionTechnologies"
+    },
+    {
+      "columns": [
+        "TechnologyId"
+      ],
+      "nameExplicit": true,
+      "schemaTo": "dbo",
+      "tableTo": "Technologies",
+      "columnsTo": [
+        "Id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "FK_ProductionTechnologies_Technology",
+      "entityType": "fks",
+      "schema": "dbo",
+      "table": "ProductionTechnologies"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Id"
+      ],
+      "name": "PK_Categories",
+      "entityType": "pks",
+      "schema": "dbo",
+      "table": "Categories"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Id"
+      ],
+      "name": "PK_Documents",
+      "entityType": "pks",
+      "schema": "dbo",
+      "table": "Documents"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Id"
+      ],
+      "name": "PK_KnowledgeAreas",
+      "entityType": "pks",
+      "schema": "dbo",
+      "table": "KnowledgeAreas"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Id"
+      ],
+      "name": "PK_Majors",
+      "entityType": "pks",
+      "schema": "dbo",
+      "table": "Majors"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Id"
+      ],
+      "name": "PK_ProductionCoauthors",
+      "entityType": "pks",
+      "schema": "dbo",
+      "table": "ProductionCoauthors"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Id"
+      ],
+      "name": "PK_Productions",
+      "entityType": "pks",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "ProductionId",
+        "TechnologyId"
+      ],
+      "name": "PK_ProductionTechnologies",
+      "entityType": "pks",
+      "schema": "dbo",
+      "table": "ProductionTechnologies"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Id"
+      ],
+      "name": "PK_ProductionTypes",
+      "entityType": "pks",
+      "schema": "dbo",
+      "table": "ProductionTypes"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Id"
+      ],
+      "name": "PK_ResearchLines",
+      "entityType": "pks",
+      "schema": "dbo",
+      "table": "ResearchLines"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Id"
+      ],
+      "name": "PK_ResearchTypes",
+      "entityType": "pks",
+      "schema": "dbo",
+      "table": "ResearchTypes"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Id"
+      ],
+      "name": "PK_Technologies",
+      "entityType": "pks",
+      "schema": "dbo",
+      "table": "Technologies"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        "Id"
+      ],
+      "name": "PK_Users",
+      "entityType": "pks",
+      "schema": "dbo",
+      "table": "Users"
+    },
+    {
+      "column": "UploadedAt",
+      "nameExplicit": true,
+      "default": "(sysdatetime())",
+      "name": "DF_Documents_UploadedAt",
+      "entityType": "defaults",
+      "schema": "dbo",
+      "table": "Documents"
+    },
+    {
+      "column": "CreatedAt",
+      "nameExplicit": true,
+      "default": "(CONVERT([date],getdate()))",
+      "name": "DF_Productions_CreatedAt",
+      "entityType": "defaults",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "column": "RegisteredAt",
+      "nameExplicit": true,
+      "default": "(CONVERT([date],getdate()))",
+      "name": "DF_Users_RegisteredAt",
+      "entityType": "defaults",
+      "schema": "dbo",
+      "table": "Users"
+    },
+    {
+      "value": "([Status]>=(1) AND [Status]<=(4))",
+      "name": "CK_Productions_Status",
+      "entityType": "checks",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "value": "([Year]>=(2000) AND [Year]<=(2100))",
+      "name": "CK_Productions_Year",
+      "entityType": "checks",
+      "schema": "dbo",
+      "table": "Productions"
+    },
+    {
+      "value": "([Role]>=(1) AND [Role]<=(5))",
+      "name": "CK_Users_Role",
+      "entityType": "checks",
+      "schema": "dbo",
+      "table": "Users"
+    },
+    {
+      "value": "([Status]>=(1) AND [Status]<=(2))",
+      "name": "CK_Users_Status",
+      "entityType": "checks",
+      "schema": "dbo",
+      "table": "Users"
+    }
+  ],
+  "renames": []
+}
