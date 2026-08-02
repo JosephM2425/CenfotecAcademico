@@ -12,6 +12,7 @@ import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
 import Table from 'react-bootstrap/Table'
 import { TablePagination } from '../../components/TablePagination'
+import { useConfirm } from '../../hooks/useConfirm'
 import { useRole } from '../../hooks/useRole'
 import { useToast } from '../../hooks/useToast'
 import type { EstadoUsuario, Rol, Usuario } from '../../services/types'
@@ -40,6 +41,7 @@ export function UsuariosMaintenance() {
   const deleteMutation = useDeleteUsuario()
   const { canDelete } = useRole()
   const { showToast } = useToast()
+  const { confirm, confirmDialog } = useConfirm()
 
   const [search, setSearch] = useState('')
   const [rolFilter, setRolFilter] = useState('')
@@ -57,11 +59,15 @@ export function UsuariosMaintenance() {
   }, [usuarios, search, rolFilter])
 
   const handleDelete = useCallback(
-    (id: number) => {
-      if (!window.confirm('¿Está seguro de eliminar este registro?')) return
+    async (id: number) => {
+      const confirmed = await confirm('¿Está seguro de eliminar este registro?', {
+        title: 'Eliminar usuario',
+        confirmLabel: 'Eliminar',
+      })
+      if (!confirmed) return
       deleteMutation.mutate(id, { onSuccess: () => showToast('Registro eliminado correctamente.') })
     },
-    [deleteMutation, showToast],
+    [confirm, deleteMutation, showToast],
   )
 
   function openAddModal() {
@@ -187,7 +193,6 @@ export function UsuariosMaintenance() {
     initialState: { pagination: { pageSize: PAGE_SIZE } },
   })
 
-  // `table` intentionally excluded from deps: see ProduccionTable for rationale.
   useEffect(() => {
     table.setPageIndex(0)
   }, [search, rolFilter])
@@ -309,6 +314,8 @@ export function UsuariosMaintenance() {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      {confirmDialog}
     </>
   )
 }

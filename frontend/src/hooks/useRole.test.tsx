@@ -41,6 +41,14 @@ describe('useRole', () => {
     expect(result.current.canAdmin).toBe(false)
   })
 
+  it('gives a Coordinador the same permissions as Administrador except canAdmin', () => {
+    const { result } = renderHook(() => useRole(), { wrapper: wrapperWithUser(makeUser('Coordinador')) })
+    expect(result.current.canCreate).toBe(true)
+    expect(result.current.canEdit).toBe(true)
+    expect(result.current.canDelete).toBe(true)
+    expect(result.current.canAdmin).toBe(false)
+  })
+
   it('allows Investigador to create but not edit or delete', () => {
     const { result } = renderHook(() => useRole(), { wrapper: wrapperWithUser(makeUser('Investigador')) })
     expect(result.current.canCreate).toBe(true)

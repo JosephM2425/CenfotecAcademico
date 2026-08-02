@@ -2,12 +2,37 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { ReactNode } from 'react'
-import { describe, expect, it } from 'vitest'
-import { categoriasSeed } from '../../services/seedData'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { AuthUser } from '../../services/types'
 import { ToastProvider } from '../../store/ToastProvider'
 import { UsuarioContext } from '../../store/UsuarioContext'
 import { CatalogMaintenance } from './CatalogMaintenance'
+
+vi.mock('@clerk/react', () => ({
+  useAuth: () => ({ getToken: async () => 'test-token' }),
+}))
+
+interface CatalogDto {
+  id: number
+  name: string
+  description: string
+}
+
+let categorias: CatalogDto[]
+
+vi.mock('../../services/apiClient', () => ({
+  apiFetch: vi.fn(async (path: string, _getToken: unknown, init?: RequestInit) => {
+    const method = init?.method ?? 'GET'
+    if (path === '/api/categories' && method === 'GET') return categorias
+    if (path === '/api/categories' && method === 'POST') {
+      const body = JSON.parse(init!.body as string)
+      const created = { id: categorias.length + 1, ...body }
+      categorias = [...categorias, created]
+      return created
+    }
+    throw new Error(`Unhandled request in test: ${method} ${path}`)
+  }),
+}))
 
 const adminUser: AuthUser = {
   id: 1,
@@ -30,10 +55,14 @@ function renderWithProviders(ui: ReactNode) {
 }
 
 describe('CatalogMaintenance', () => {
-  it('lists seeded items and filters by search', async () => {
+  beforeEach(() => {
+    categorias = [{ id: 1, name: 'Pregrado', description: 'Producción de nivel licenciatura o bachillerato' }]
+  })
+
+  it('lists items from the backend and filters by search', async () => {
     renderWithProviders(<CatalogMaintenance catalogKey="categorias" />)
 
-    expect(await screen.findByText(categoriasSeed[0].nombre)).toBeInTheDocument()
+    expect(await screen.findByText('Pregrado')).toBeInTheDocument()
 
     const user = userEvent.setup()
     await user.type(screen.getByPlaceholderText(/buscar categoría/i), 'zzz-no-existe')
@@ -43,7 +72,7 @@ describe('CatalogMaintenance', () => {
 
   it('creates a new item through the add modal', async () => {
     renderWithProviders(<CatalogMaintenance catalogKey="categorias" />)
-    await screen.findByText(categoriasSeed[0].nombre)
+    await screen.findByText('Pregrado')
 
     const user = userEvent.setup()
     await user.click(screen.getByRole('button', { name: /nueva categoría/i }))

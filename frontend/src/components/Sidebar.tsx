@@ -11,7 +11,14 @@ interface NavItem {
   roles?: Rol[]
 }
 
-const mainNavItems: NavItem[] = [{ to: paths.dashboard, label: 'Dashboard', icon: 'bi-speedometer2' }]
+const mainNavItems: NavItem[] = [
+  {
+    to: paths.dashboard,
+    label: 'Dashboard',
+    icon: 'bi-speedometer2',
+    roles: ['Administrador', 'Coordinador', 'Docente', 'Investigador'],
+  },
+]
 
 const produccionNavItems: NavItem[] = [
   { to: paths.produccionList, label: 'Listar Producción', icon: 'bi-journal-text' },
@@ -52,7 +59,7 @@ export function Sidebar({ open, onNavigate, ref }: SidebarProps) {
       </div>
       <nav className="sidebar-nav">
         <div className="nav-section">Principal</div>
-        {mainNavItems.map((item) => (
+        {mainNavItems.filter(isVisible).map((item) => (
           <NavLink key={item.to} to={item.to} end onClick={onNavigate}>
             <i className={`bi ${item.icon}`} /> {item.label}
           </NavLink>

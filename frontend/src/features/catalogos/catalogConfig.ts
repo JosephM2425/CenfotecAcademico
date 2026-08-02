@@ -7,8 +7,7 @@ import {
   tiposInvestigacionApi,
   tiposProduccionApi,
 } from '../../services/catalogApis'
-import type { EntityApi } from '../../services/entityApi'
-import type { CatalogItem } from '../../services/types'
+import type { CatalogApi } from '../../services/catalogApi'
 
 export interface CatalogConfig {
   key: string
@@ -19,7 +18,7 @@ export interface CatalogConfig {
   addButtonLabel: string
   addModalTitle: string
   editModalTitle: string
-  api: EntityApi<CatalogItem>
+  api: CatalogApi
 }
 
 export const catalogConfigs: CatalogConfig[] = [

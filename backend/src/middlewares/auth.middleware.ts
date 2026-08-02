@@ -1,8 +1,6 @@
 import type { RequestHandler } from "express";
-import { clerkClient, getAuth } from "@clerk/express";
-import { eq } from "drizzle-orm";
-import { db } from "../config/db.js";
-import { users } from "../models/index.js";
+import { getAuth } from "@clerk/express";
+import { resolveCurrentUser } from "../services/identity.service.js";
 import type { Role } from "../models/enums.js";
 
 export interface CurrentUser {
@@ -40,23 +38,7 @@ export const loadCurrentUser: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    const clerkUser = await clerkClient.users.getUser(userId);
-    const email = clerkUser.primaryEmailAddress?.emailAddress;
-    if (!email) {
-      res
-        .status(401)
-        .json({ error: "El usuario de Clerk no tiene un correo asociado" });
-      return;
-    }
-
-    const [user] = await db.select().from(users).where(eq(users.email, email));
-    if (!user) {
-      res
-        .status(403)
-        .json({ error: "No existe un perfil registrado para este correo" });
-      return;
-    }
-
+    const { user } = await resolveCurrentUser(userId);
     req.currentUser = user;
     next();
   } catch (err) {

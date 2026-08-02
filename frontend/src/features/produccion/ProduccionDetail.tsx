@@ -1,9 +1,14 @@
+import { useAuth } from '@clerk/react'
+import { useState } from 'react'
 import Button from 'react-bootstrap/Button'
+import Spinner from 'react-bootstrap/Spinner'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { StatusBadge } from '../../components/StatusBadge'
+import { useConfirm } from '../../hooks/useConfirm'
 import { useRole } from '../../hooks/useRole'
 import { useToast } from '../../hooks/useToast'
 import { paths } from '../../routes/paths'
+import { produccionApi } from '../../services/produccionApi'
 import { useDeleteProduccion, useProduccionDetail } from './useProduccionQueries'
 
 export function ProduccionDetail() {
@@ -14,15 +19,34 @@ export function ProduccionDetail() {
   const deleteMutation = useDeleteProduccion()
   const { showToast } = useToast()
   const navigate = useNavigate()
+  const { getToken } = useAuth()
+  const [isDownloading, setIsDownloading] = useState(false)
+  const { confirm, confirmDialog } = useConfirm()
 
-  function handleDelete() {
-    if (!window.confirm('¿Está seguro de eliminar esta producción académica?')) return
+  async function handleDelete() {
+    const confirmed = await confirm('¿Está seguro de eliminar esta producción académica?', {
+      title: 'Eliminar producción académica',
+      confirmLabel: 'Eliminar',
+    })
+    if (!confirmed) return
     deleteMutation.mutate(id, {
       onSuccess: () => {
         showToast('Producción académica eliminada correctamente.')
         navigate(paths.produccionList)
       },
     })
+  }
+
+  async function handleDownload() {
+    if (!prod?.documento) return
+    setIsDownloading(true)
+    try {
+      await produccionApi.downloadDocumento(getToken, id, prod.documento)
+    } catch {
+      showToast('No se pudo descargar el documento.', 'danger')
+    } finally {
+      setIsDownloading(false)
+    }
   }
 
   return (
@@ -35,7 +59,10 @@ export function ProduccionDetail() {
       </div>
 
       {isLoading ? (
-        <p className="text-muted">Cargando...</p>
+        <div className="d-flex align-items-center gap-2 text-muted">
+          <Spinner animation="border" size="sm" />
+          Cargando...
+        </div>
       ) : !prod ? (
         <div className="alert alert-warning">Producción no encontrada.</div>
       ) : (
@@ -168,16 +195,24 @@ export function ProduccionDetail() {
                   Documento
                 </h6>
                 <div className="text-center py-3">
-                  <i className="bi bi-file-earmark-pdf" style={{ fontSize: '3rem', color: '#e53e3e' }} />
-                  <p className="mt-2 mb-1 fw-semibold">{prod.documento}</p>
+                  <i
+                    className="bi bi-file-earmark-pdf"
+                    style={{ fontSize: '3rem', color: prod.documento ? '#e53e3e' : '#adb5bd' }}
+                  />
+                  <p className="mt-2 mb-1 fw-semibold">{prod.documento || 'Sin documento'}</p>
                   <small className="text-muted">Documento PDF</small>
                   <div className="mt-3">
                     <Button
                       size="sm"
                       className="btn-primary-custom"
-                      onClick={() => showToast(`Descarga simulada: ${prod.documento}`, 'info')}
+                      onClick={handleDownload}
+                      disabled={!prod.documento || isDownloading}
                     >
-                      <i className="bi bi-download me-1" />
+                      {isDownloading ? (
+                        <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-1" />
+                      ) : (
+                        <i className="bi bi-download me-1" />
+                      )}
                       Descargar
                     </Button>
                   </div>
@@ -187,6 +222,8 @@ export function ProduccionDetail() {
           </div>
         </>
       )}
+
+      {confirmDialog}
     </>
   )
 }

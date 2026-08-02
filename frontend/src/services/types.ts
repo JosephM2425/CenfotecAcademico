@@ -1,4 +1,4 @@
-export type Rol = 'Administrador' | 'Docente' | 'Investigador' | 'Estudiante'
+export type Rol = 'Administrador' | 'Coordinador' | 'Docente' | 'Investigador' | 'Estudiante'
 
 export type EstadoProduccion = 'Publicado' | 'En revisión' | 'Borrador' | 'Rechazado'
 
@@ -16,12 +16,18 @@ export interface Produccion {
   autor: string
   coautores: string
   tipo: string
+  tipoId: number
   categoria: string
+  categoriaId: number
   area: string
+  areaId: number
   tecnologias: string[]
   tipoInvestigacion: string
+  tipoInvestigacionId: number
   carrera: string
+  carreraId: number
   linea: string
+  lineaId: number
   anio: number
   estado: EstadoProduccion
   resumen: string
@@ -29,13 +35,27 @@ export interface Produccion {
   documento: string
 }
 
-export type ProduccionInput = Omit<Produccion, 'id'>
+export interface ProduccionInput {
+  titulo: string
+  autor: string
+  coautores: string
+  resumen: string
+  anio: number
+  estado: EstadoProduccion
+  tipoId: number
+  categoriaId: number
+  areaId: number
+  tipoInvestigacionId: number
+  carreraId: number
+  lineaId: number
+  tecnologias: string[]
+}
 
 export interface Usuario {
   id: number
   nombre: string
   email: string
-  password: string
+  password?: string
   rol: Rol
   estado: EstadoUsuario
   fechaRegistro: string
@@ -43,5 +63,4 @@ export interface Usuario {
 
 export type UsuarioInput = Omit<Usuario, 'id'>
 
-/** The logged-in user, without the password — this is what gets stored in the session. */
 export type AuthUser = Omit<Usuario, 'password'>

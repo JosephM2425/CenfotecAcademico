@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
+import Spinner from 'react-bootstrap/Spinner'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useCatalogList } from '../catalogos/useCatalogQueries'
 import { useToast } from '../../hooks/useToast'
@@ -8,7 +9,7 @@ import { paths } from '../../routes/paths'
 import type { EstadoProduccion, ProduccionInput } from '../../services/types'
 import { FileUploadArea } from './FileUploadArea'
 import { TecnologiaPicker } from './TecnologiaPicker'
-import { useCreateProduccion, useProduccionDetail, useUpdateProduccion } from './useProduccionQueries'
+import { useCreateProduccion, useProduccionDetail, useUpdateProduccion, useUploadDocumento } from './useProduccionQueries'
 
 interface ProduccionFormValues {
   titulo: string
@@ -80,6 +81,7 @@ export function ProduccionForm({ mode }: ProduccionFormProps) {
   const detailQuery = useProduccionDetail(id ?? Number.NaN)
   const createMutation = useCreateProduccion()
   const updateMutation = useUpdateProduccion()
+  const uploadMutation = useUploadDocumento()
 
   const { data: tipos = [] } = useCatalogList('tipos')
   const { data: categorias = [] } = useCatalogList('categorias')
@@ -104,12 +106,12 @@ export function ProduccionForm({ mode }: ProduccionFormProps) {
         resumen: p.resumen,
         anio: String(p.anio),
         estado: p.estado,
-        tipo: p.tipo,
-        categoria: p.categoria,
-        tipoInvestigacion: p.tipoInvestigacion,
-        area: p.area,
-        carrera: p.carrera,
-        linea: p.linea,
+        tipo: String(p.tipoId),
+        categoria: String(p.categoriaId),
+        tipoInvestigacion: String(p.tipoInvestigacionId),
+        area: String(p.areaId),
+        carrera: String(p.carreraId),
+        linea: String(p.lineaId),
       })
       setTecnologias(p.tecnologias)
       setPrefilled(true)
@@ -125,12 +127,28 @@ export function ProduccionForm({ mode }: ProduccionFormProps) {
   }
 
   const errors = validate(values, tecnologias)
-  const isSaving = createMutation.isPending || updateMutation.isPending
+  const isUploadingDoc = uploadMutation.isPending
+  const isSaving = createMutation.isPending || updateMutation.isPending || isUploadingDoc
+
+  async function afterSave(savedId: number) {
+    if (documentoFile) {
+      await uploadMutation.mutateAsync({ id: savedId, file: documentoFile })
+    }
+    showToast(
+      mode === 'edit'
+        ? 'Producción académica actualizada correctamente.'
+        : 'Producción académica registrada correctamente.',
+    )
+    navigate(paths.produccionList)
+  }
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault()
     setSubmitted(true)
-    if (Object.keys(errors).length > 0) return
+    if (Object.keys(errors).length > 0) {
+      showToast('Revise los campos marcados en rojo antes de guardar.', 'danger')
+      return
+    }
 
     const payload: ProduccionInput = {
       titulo: values.titulo.trim(),
@@ -139,41 +157,46 @@ export function ProduccionForm({ mode }: ProduccionFormProps) {
       resumen: values.resumen.trim(),
       anio: Number(values.anio),
       estado: values.estado as EstadoProduccion,
-      tipo: values.tipo,
-      categoria: values.categoria,
-      tipoInvestigacion: values.tipoInvestigacion,
-      area: values.area,
-      carrera: values.carrera,
-      linea: values.linea,
+      tipoId: Number(values.tipo),
+      categoriaId: Number(values.categoria),
+      areaId: Number(values.area),
+      tipoInvestigacionId: Number(values.tipoInvestigacion),
+      carreraId: Number(values.carrera),
+      lineaId: Number(values.linea),
       tecnologias,
-      documento: documentoFile
-        ? `documento_${Date.now()}.pdf`
-        : (detailQuery.data?.documento ?? `documento_${Date.now()}.pdf`),
-      fecha: new Date().toISOString().split('T')[0],
     }
 
     if (mode === 'edit' && id !== undefined) {
       updateMutation.mutate(
         { id, input: payload },
         {
-          onSuccess: () => {
-            showToast('Producción académica actualizada correctamente.')
-            navigate(paths.produccionList)
+          onSuccess: (saved) => {
+            afterSave(saved.id).catch(() =>
+              showToast('La producción se guardó, pero el documento no se pudo subir.', 'danger'),
+            )
           },
+          onError: (error) => showToast(`No se pudo actualizar la producción: ${error.message}`, 'danger'),
         },
       )
     } else {
       createMutation.mutate(payload, {
-        onSuccess: () => {
-          showToast('Producción académica registrada correctamente.')
-          navigate(paths.produccionList)
+        onSuccess: (created) => {
+          afterSave(created.id).catch(() =>
+            showToast('La producción se guardó, pero el documento no se pudo subir.', 'danger'),
+          )
         },
+        onError: (error) => showToast(`No se pudo registrar la producción: ${error.message}`, 'danger'),
       })
     }
   }
 
   if (mode === 'edit' && !prefilled) {
-    return <p className="text-muted">Cargando...</p>
+    return (
+      <div className="d-flex align-items-center gap-2 text-muted">
+        <Spinner animation="border" size="sm" />
+        Cargando...
+      </div>
+    )
   }
 
   return (
@@ -299,7 +322,7 @@ export function ProduccionForm({ mode }: ProduccionFormProps) {
                     >
                       <option value="">Seleccione...</option>
                       {options.map((option) => (
-                        <option key={option.id} value={option.nombre}>
+                        <option key={option.id} value={option.id}>
                           {option.nombre}
                         </option>
                       ))}
@@ -341,8 +364,17 @@ export function ProduccionForm({ mode }: ProduccionFormProps) {
               Cancelar
             </Link>
             <Button type="submit" className="btn-primary-custom" disabled={isSaving}>
-              <i className="bi bi-check-lg me-1" />
-              {isSaving ? 'Guardando...' : 'Guardar'}
+              {isSaving ? (
+                <>
+                  <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-2" />
+                  {isUploadingDoc ? 'Subiendo documento...' : 'Guardando...'}
+                </>
+              ) : (
+                <>
+                  <i className="bi bi-check-lg me-1" />
+                  Guardar
+                </>
+              )}
             </Button>
           </div>
         </Form>

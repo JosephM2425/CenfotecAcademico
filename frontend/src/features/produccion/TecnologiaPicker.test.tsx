@@ -4,6 +4,23 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { TecnologiaPicker } from './TecnologiaPicker'
 
+vi.mock('@clerk/react', () => ({
+  useAuth: () => ({ getToken: async () => 'test-token' }),
+}))
+
+vi.mock('../../services/apiClient', () => ({
+  apiFetch: vi.fn(async (path: string) => {
+    if (path === '/api/technologies') {
+      return [
+        { id: 1, name: 'Python', description: '' },
+        { id: 2, name: 'Java', description: '' },
+        { id: 3, name: 'JavaScript', description: '' },
+      ]
+    }
+    throw new Error(`Unhandled request in test: ${path}`)
+  }),
+}))
+
 function renderPicker(selected: string[] = []) {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })
   const onToggle = vi.fn()

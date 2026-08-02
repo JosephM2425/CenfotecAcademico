@@ -4,12 +4,14 @@ import { apiFetch } from '../services/apiClient'
 import { queryKeys } from '../services/queryKeys'
 
 export interface MeResponse {
-  id: string
-  email: string | null
-  nombre: string
+  id: number
+  name: string
+  email: string
+  role: number
+  status: number
+  registeredAt: string
 }
 
-/** Fetches the backend's Clerk-verified identity for the current session. */
 export function useMe() {
   const { getToken, isSignedIn } = useAuth()
 

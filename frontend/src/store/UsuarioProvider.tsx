@@ -1,29 +1,27 @@
-import { useUser } from "@clerk/react";
+import { useAuth } from "@clerk/react";
 import { useMemo, type ReactNode } from "react";
-import { useUsuariosList } from "../features/usuarios/useUsuariosQueries";
 import { useMe } from "../hooks/useMe";
+import type { AuthUser } from "../services/types";
+import { ROLE_BY_CODE, STATUS_BY_CODE } from "../services/userCodes";
 import { UsuarioContext } from "./UsuarioContext";
 
 export function UsuarioProvider({ children }: { children: ReactNode }) {
-  const { user, isLoaded: isClerkLoaded } = useUser();
-  const { data: me } = useMe();
-  const { data: usuarios, isLoading: isUsuariosLoading } = useUsuariosList();
+  const { isLoaded: isClerkLoaded } = useAuth();
+  const { data: me, isLoading: isMeLoading } = useMe();
 
-  // Prefer the backend's Clerk-verified email; fall back to the client-side
-  // one so the app keeps working even if the backend is unreachable.
-  const email = me?.email ?? user?.primaryEmailAddress?.emailAddress;
+  const usuario = useMemo<AuthUser | null>(() => {
+    if (!me) return null;
+    return {
+      id: me.id,
+      nombre: me.name,
+      email: me.email,
+      rol: ROLE_BY_CODE[me.role] ?? "Estudiante",
+      estado: STATUS_BY_CODE[me.status] ?? "Activo",
+      fechaRegistro: me.registeredAt,
+    };
+  }, [me]);
 
-  const usuario = useMemo(() => {
-    if (!email || !usuarios) return null;
-    const match = usuarios.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase(),
-    );
-    if (!match) return null;
-    const { password: _password, ...authUser } = match;
-    return authUser;
-  }, [email, usuarios]);
-
-  const isLoaded = isClerkLoaded && (!email || !isUsuariosLoading);
+  const isLoaded = isClerkLoaded && !isMeLoading;
 
   return (
     <UsuarioContext.Provider value={{ usuario, isLoaded }}>

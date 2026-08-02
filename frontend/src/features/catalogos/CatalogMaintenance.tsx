@@ -12,6 +12,7 @@ import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
 import Table from 'react-bootstrap/Table'
 import { TablePagination } from '../../components/TablePagination'
+import { useConfirm } from '../../hooks/useConfirm'
 import { useRole } from '../../hooks/useRole'
 import { useToast } from '../../hooks/useToast'
 import type { CatalogItem } from '../../services/types'
@@ -40,6 +41,7 @@ export function CatalogMaintenance({ catalogKey }: CatalogMaintenanceProps) {
   const deleteMutation = useDeleteCatalogItem(catalogKey)
   const { canDelete } = useRole()
   const { showToast } = useToast()
+  const { confirm, confirmDialog } = useConfirm()
 
   const [search, setSearch] = useState('')
   const [showAddModal, setShowAddModal] = useState(false)
@@ -54,11 +56,15 @@ export function CatalogMaintenance({ catalogKey }: CatalogMaintenanceProps) {
   }, [items, search])
 
   const handleDelete = useCallback(
-    (id: number) => {
-      if (!window.confirm('¿Está seguro de eliminar este registro?')) return
+    async (id: number) => {
+      const confirmed = await confirm('¿Está seguro de eliminar este registro?', {
+        title: 'Eliminar registro',
+        confirmLabel: 'Eliminar',
+      })
+      if (!confirmed) return
       deleteMutation.mutate(id, { onSuccess: () => showToast('Registro eliminado correctamente.') })
     },
-    [deleteMutation, showToast],
+    [confirm, deleteMutation, showToast],
   )
 
   function openAddModal() {
@@ -149,7 +155,6 @@ export function CatalogMaintenance({ catalogKey }: CatalogMaintenanceProps) {
     initialState: { pagination: { pageSize: PAGE_SIZE } },
   })
 
-  // `table` intentionally excluded from deps: see ProduccionTable for rationale.
   useEffect(() => {
     table.setPageIndex(0)
   }, [search])
@@ -261,6 +266,8 @@ export function CatalogMaintenance({ catalogKey }: CatalogMaintenanceProps) {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      {confirmDialog}
     </>
   )
 }

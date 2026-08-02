@@ -9,10 +9,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
+import Spinner from 'react-bootstrap/Spinner'
 import Table from 'react-bootstrap/Table'
 import { Link } from 'react-router-dom'
 import { TablePagination } from '../../components/TablePagination'
 import { StatusBadge } from '../../components/StatusBadge'
+import { useConfirm } from '../../hooks/useConfirm'
 import { useRole } from '../../hooks/useRole'
 import { useToast } from '../../hooks/useToast'
 import { paths } from '../../routes/paths'
@@ -29,6 +31,7 @@ export function ProduccionTable() {
   const { canCreate, canEdit, canDelete } = useRole()
   const deleteMutation = useDeleteProduccion()
   const { showToast } = useToast()
+  const { confirm, confirmDialog } = useConfirm()
 
   const [search, setSearch] = useState('')
   const [tipoFilter, setTipoFilter] = useState('')
@@ -50,13 +53,17 @@ export function ProduccionTable() {
   }, [produccion, search, tipoFilter, estadoFilter, areaFilter])
 
   const handleDelete = useCallback(
-    (id: number) => {
-      if (!window.confirm('¿Está seguro de eliminar esta producción académica?')) return
+    async (id: number) => {
+      const confirmed = await confirm('¿Está seguro de eliminar esta producción académica?', {
+        title: 'Eliminar producción académica',
+        confirmLabel: 'Eliminar',
+      })
+      if (!confirmed) return
       deleteMutation.mutate(id, {
         onSuccess: () => showToast('Producción académica eliminada correctamente.'),
       })
     },
-    [deleteMutation, showToast],
+    [confirm, deleteMutation, showToast],
   )
 
   const columns = useMemo(
@@ -134,13 +141,17 @@ export function ProduccionTable() {
     initialState: { pagination: { pageSize: PAGE_SIZE } },
   })
 
-  // `table` itself is intentionally excluded: it's a new object every render,
-  // and including it here would reset the page on every pagination click too.
   useEffect(() => {
     table.setPageIndex(0)
   }, [search, tipoFilter, estadoFilter, areaFilter])
 
-  if (isLoading) return <p className="text-muted">Cargando producción académica...</p>
+  if (isLoading)
+    return (
+      <div className="d-flex align-items-center gap-2 text-muted">
+        <Spinner animation="border" size="sm" />
+        Cargando producción académica...
+      </div>
+    )
 
   const { pageIndex, pageSize } = table.getState().pagination
   const totalRows = filtered.length
@@ -245,6 +256,8 @@ export function ProduccionTable() {
           <TablePagination table={table} />
         </Card.Footer>
       </Card>
+
+      {confirmDialog}
     </>
   )
 }

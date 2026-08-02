@@ -1,5 +1,6 @@
 import type { RequestHandler } from "express";
-import { clerkClient, getAuth } from "@clerk/express";
+import { getAuth } from "@clerk/express";
+import { resolveCurrentUser } from "../services/identity.service.js";
 
 export const getMe: RequestHandler = async (req, res) => {
   const { userId } = getAuth(req);
@@ -8,10 +9,7 @@ export const getMe: RequestHandler = async (req, res) => {
     return;
   }
 
-  const user = await clerkClient.users.getUser(userId);
-  res.json({
-    id: user.id,
-    email: user.primaryEmailAddress?.emailAddress ?? null,
-    nombre: [user.firstName, user.lastName].filter(Boolean).join(" "),
-  });
+  const { user } = await resolveCurrentUser(userId);
+  const { password: _password, ...profile } = user;
+  res.json(profile);
 };

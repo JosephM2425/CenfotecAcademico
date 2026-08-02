@@ -1,27 +1,33 @@
-import { useClerk } from '@clerk/react'
-import Button from 'react-bootstrap/Button'
-import { useCurrentUsuario } from '../hooks/useCurrentUsuario'
-import { paths } from '../routes/paths'
+import { useClerk } from "@clerk/react";
+import Button from "react-bootstrap/Button";
+import { useCurrentUsuario } from "../hooks/useCurrentUsuario";
+import { paths } from "../routes/paths";
+import { UserAvatar } from "@clerk/react";
 
 interface TopNavbarProps {
-  title: string
-  onToggleSidebar: () => void
+  title: string;
+  onToggleSidebar: () => void;
 }
 
 export function TopNavbar({ title, onToggleSidebar }: TopNavbarProps) {
-  const { usuario } = useCurrentUsuario()
-  const { signOut } = useClerk()
+  const { usuario } = useCurrentUsuario();
+  const { signOut } = useClerk();
 
   return (
     <header className="top-navbar">
       <div className="d-flex align-items-center gap-3">
-        <button type="button" className="sidebar-toggle" onClick={onToggleSidebar} aria-label="Alternar menú">
+        <button
+          type="button"
+          className="sidebar-toggle"
+          onClick={onToggleSidebar}
+          aria-label="Alternar menú"
+        >
           <i className="bi bi-list" />
         </button>
         <span className="page-title">{title}</span>
       </div>
       <div className="user-menu">
-        <i className="bi bi-person-circle fs-5" />
+        <UserAvatar />
         <div className="user-menu-info">
           <span className="user-menu-name">{usuario?.nombre}</span>
           <small className="user-menu-role">{usuario?.rol}</small>
@@ -36,5 +42,5 @@ export function TopNavbar({ title, onToggleSidebar }: TopNavbarProps) {
         </Button>
       </div>
     </header>
-  )
+  );
 }
