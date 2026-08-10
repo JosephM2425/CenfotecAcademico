@@ -1,9 +1,12 @@
 import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Tooltip } from 'chart.js'
+import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Spinner from 'react-bootstrap/Spinner'
 import { Bar, Pie } from 'react-chartjs-2'
 import { useRole } from '../../hooks/useRole'
+import { useToast } from '../../hooks/useToast'
 import { useDashboardStats } from './useDashboardStats'
+import { useSyncOpenAlex } from './useSyncOpenAlex'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Legend)
 
@@ -42,9 +45,25 @@ const pieOptions = {
 }
 
 export function DashboardStats() {
-  const { role } = useRole()
+  const { role, canDelete } = useRole()
   const canView = role !== 'Estudiante'
   const { data, isLoading, isError } = useDashboardStats(canView)
+  const { showToast } = useToast()
+  const syncOpenAlex = useSyncOpenAlex()
+
+  function handleSyncOpenAlex() {
+    syncOpenAlex.mutate(undefined, {
+      onSuccess: (result) => {
+        showToast(
+          `Catálogos actualizados: ${result.knowledgeAreas.created} áreas de conocimiento y ${result.technologies.created} tecnologías nuevas (OpenAlex).`,
+          'success',
+        )
+      },
+      onError: (error) => {
+        showToast(error instanceof Error ? error.message : 'No se pudo sincronizar con OpenAlex', 'danger')
+      },
+    })
+  }
 
   if (!canView) {
     return <div className="alert alert-info alert-custom">Este panel de indicadores no está disponible para tu rol.</div>
@@ -90,6 +109,29 @@ export function DashboardStats() {
 
   return (
     <div className="row g-4">
+      {canDelete && (
+        <div className="col-12 d-flex justify-content-end">
+          <Button
+            variant="outline-primary"
+            size="sm"
+            disabled={syncOpenAlex.isPending}
+            onClick={handleSyncOpenAlex}
+          >
+            {syncOpenAlex.isPending ? (
+              <>
+                <Spinner animation="border" size="sm" className="me-2" />
+                Sincronizando...
+              </>
+            ) : (
+              <>
+                <i className="bi bi-cloud-download me-2" />
+                Actualizar catálogos desde OpenAlex
+              </>
+            )}
+          </Button>
+        </div>
+      )}
+
       <div className="col-lg-6">
         <Card className="card-custom h-100">
           <Card.Body>

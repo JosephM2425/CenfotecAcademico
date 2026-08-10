@@ -16,4 +16,5 @@ export const env = {
   DB_USER: required("DB_USER"),
   DB_PASSWORD: required("DB_PASSWORD"),
   DB_DATABASE: required("DB_DATABASE"),
+  OPEN_ALEX_API_KEY: process.env.OPEN_ALEX_API_KEY,
 };
