@@ -29,7 +29,7 @@ export function TopNavbar({ title, onToggleSidebar }: TopNavbarProps) {
       <div className="user-menu">
         <UserAvatar />
         <div className="user-menu-info">
-          <span className="user-menu-name">{usuario?.nombre}</span>
+          <span className="user-menu-name">{usuario?.nombre} Prueba</span>
           <small className="user-menu-role">{usuario?.rol}</small>
         </div>
         <Button
