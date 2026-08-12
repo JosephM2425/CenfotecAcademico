@@ -1,0 +1,23 @@
+{
+  "name": "cenfoacademico",
+  "version": "1.0.0",
+  "description": "Herramientas de repositorio (git hooks). El código vive en frontend/ y backend/.",
+  "private": true,
+  "scripts": {
+    "prepare": "husky"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.3.0",
+      "onFail": "download"
+    }
+  },
+  "type": "module",
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}

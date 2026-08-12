@@ -12,6 +12,7 @@ export interface CatalogItem {
 
 export interface Produccion {
   id: number
+  ownerId: number
   titulo: string
   autor: string
   coautores: string

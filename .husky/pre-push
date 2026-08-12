@@ -1,0 +1,15 @@
+set -e
+
+echo "▶ backend: lint"
+pnpm --dir backend run lint
+
+echo "▶ backend: test"
+pnpm --dir backend run test -- run
+
+echo "▶ frontend: lint"
+pnpm --dir frontend run lint
+
+echo "▶ frontend: test"
+pnpm --dir frontend run test -- run
+
+echo "✔ Lint y tests OK, continuando con el push."

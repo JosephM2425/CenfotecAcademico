@@ -28,7 +28,7 @@ const columnHelper = createColumnHelper<Produccion>()
 
 export function ProduccionTable() {
   const { data: produccion = [], isLoading } = useProduccionList()
-  const { canCreate, canEdit, canDelete } = useRole()
+  const { canCreate, canEditProduccion, canDelete } = useRole()
   const deleteMutation = useDeleteProduccion()
   const { showToast } = useToast()
   const { confirm, confirmDialog } = useConfirm()
@@ -106,7 +106,7 @@ export function ProduccionTable() {
               >
                 <i className="bi bi-eye" />
               </Link>
-              {canEdit && (
+              {canEditProduccion(row.ownerId) && (
                 <Link
                   to={paths.produccionEditar(row.id)}
                   className="btn btn-sm btn-outline-warning me-1"
@@ -130,7 +130,7 @@ export function ProduccionTable() {
         },
       }),
     ],
-    [canEdit, canDelete, handleDelete],
+    [canEditProduccion, canDelete, handleDelete],
   )
 
   const table = useReactTable({

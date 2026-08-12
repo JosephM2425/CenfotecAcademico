@@ -1,6 +1,7 @@
 import { useAuth } from '@clerk/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
 import Spinner from 'react-bootstrap/Spinner'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { StatusBadge } from '../../components/StatusBadge'
@@ -15,13 +16,21 @@ export function ProduccionDetail() {
   const params = useParams<{ id: string }>()
   const id = Number(params.id)
   const { data: prod, isLoading } = useProduccionDetail(id)
-  const { canEdit, canDelete, role } = useRole()
+  const { canEditProduccion, canDelete } = useRole()
   const deleteMutation = useDeleteProduccion()
   const { showToast } = useToast()
   const navigate = useNavigate()
   const { getToken } = useAuth()
   const [isDownloading, setIsDownloading] = useState(false)
+  const [isPreviewLoading, setIsPreviewLoading] = useState(false)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const { confirm, confirmDialog } = useConfirm()
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl)
+    }
+  }, [previewUrl])
 
   async function handleDelete() {
     const confirmed = await confirm('¿Está seguro de eliminar esta producción académica?', {
@@ -47,6 +56,24 @@ export function ProduccionDetail() {
     } finally {
       setIsDownloading(false)
     }
+  }
+
+  async function handlePreview() {
+    if (!prod?.documento) return
+    setIsPreviewLoading(true)
+    try {
+      const url = await produccionApi.previewDocumento(getToken, id)
+      setPreviewUrl(url)
+    } catch {
+      showToast('No se pudo cargar la vista previa del documento.', 'danger')
+    } finally {
+      setIsPreviewLoading(false)
+    }
+  }
+
+  function closePreview() {
+    if (previewUrl) URL.revokeObjectURL(previewUrl)
+    setPreviewUrl(null)
   }
 
   return (
@@ -79,13 +106,13 @@ export function ProduccionDetail() {
                   <span className="badge bg-light text-dark">{prod.categoria}</span>
                 </div>
               </div>
-              {(role === 'Administrador' || role === 'Docente') && (
+              {(canEditProduccion(prod.ownerId) || canDelete) && (
                 <div className="d-flex gap-2">
                   <Link to={paths.produccionList} className="btn btn-outline-secondary">
                     <i className="bi bi-arrow-left me-1" />
                     Volver
                   </Link>
-                  {canEdit && (
+                  {canEditProduccion(prod.ownerId) && (
                     <Link to={paths.produccionEditar(prod.id)} className="btn btn-warning">
                       <i className="bi bi-pencil me-1" />
                       Editar
@@ -201,7 +228,20 @@ export function ProduccionDetail() {
                   />
                   <p className="mt-2 mb-1 fw-semibold">{prod.documento || 'Sin documento'}</p>
                   <small className="text-muted">Documento PDF</small>
-                  <div className="mt-3">
+                  <div className="mt-3 d-flex flex-wrap justify-content-center gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline-secondary"
+                      onClick={handlePreview}
+                      disabled={!prod.documento || isPreviewLoading}
+                    >
+                      {isPreviewLoading ? (
+                        <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-1" />
+                      ) : (
+                        <i className="bi bi-eye me-1" />
+                      )}
+                      Previsualizar PDF
+                    </Button>
                     <Button
                       size="sm"
                       className="btn-primary-custom"
@@ -222,6 +262,21 @@ export function ProduccionDetail() {
           </div>
         </>
       )}
+
+      <Modal show={!!previewUrl} onHide={closePreview} dialogClassName="modal-custom" size="xl" centered>
+        <Modal.Header closeButton closeVariant="white">
+          <Modal.Title>Vista previa del documento</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-0">
+          {previewUrl && (
+            <iframe
+              src={previewUrl}
+              title="Vista previa del documento PDF"
+              style={{ width: '100%', height: '75vh', border: 'none' }}
+            />
+          )}
+        </Modal.Body>
+      </Modal>
 
       {confirmDialog}
     </>

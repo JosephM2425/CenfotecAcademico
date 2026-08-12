@@ -63,6 +63,7 @@ function idByName(items: CatalogItem[], nombre: string): number | undefined {
 function resolveCommon(dto: ProductionRowDto, catalogs: ProduccionCatalogs) {
   return {
     id: dto.id,
+    ownerId: dto.ownerId,
     titulo: dto.title,
     autor: dto.author,
     resumen: dto.summary,
@@ -170,5 +171,10 @@ export const produccionApi = {
     link.download = fileName
     link.click()
     URL.revokeObjectURL(url)
+  },
+
+  async previewDocumento(getToken: GetToken, id: number): Promise<string> {
+    const blob = await apiDownload(`/api/productions/${id}/document/file`, getToken)
+    return URL.createObjectURL(blob)
   },
 }
